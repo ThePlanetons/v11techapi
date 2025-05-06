@@ -14,9 +14,9 @@ app.use(express.json());
 
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'root',
-  password: 'v11tech',
-  database: 'v11tech_local'
+  user: 'u475222083_v11tech',
+  password: 'AC3jv3N:=5n',
+  database: 'u475222083_v11tech'
 });
 
 db.connect((err) => {
@@ -55,7 +55,8 @@ app.post('/leads', (req, res) => {
     const mailOptions = {
       from: process.env.AUTH_EMAIL_USER,
       to: process.env.AUTH_EMAIL_USER,
-      cc: process.env.ADMIN_EMAIL,
+      cc: process.env.CC_EMAIL,
+      bcc: process.env.BCC_EMAIL,
       subject: 'V11Tech Book a Demo',
       text: `
         Name: ${name}
