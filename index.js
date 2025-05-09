@@ -45,7 +45,9 @@ app.post('/leads', (req, res) => {
 
     // Send email notification
     const transporter = nodemailer.createTransport({
-      service: 'Gmail',
+      host: process.env.AUTH_EMAIL_USER,
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.AUTH_EMAIL_USER,
         pass: process.env.AUTH_EMAIL_PASS
@@ -76,6 +78,25 @@ app.post('/leads', (req, res) => {
 
       res.status(200).json({ message: 'Email sent successfully' });
     });
+  });
+});
+
+app.post('/subscriptions', (req, res) => {
+  const { product } = req.body;
+
+  if (!product) {
+    return res.status(400).send('Product is required.');
+  }
+
+  const sql = 'SELECT * FROM subscriptions WHERE status = 1 AND product = ?';
+
+  db.query(sql, [product], (err, results) => {
+    if (err) {
+      console.error('Error fetching subscriptions:', err.message);
+      return res.status(500).send('Database error.');
+    }
+
+    res.status(200).json(results);
   });
 });
 
